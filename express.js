@@ -4,7 +4,9 @@ var express = require('express');
 var mongoSkin = require('mongoskin');
 var bodyParser = require('body-parser');
 var logger = require('morgan');
+var Pokedex = require('pokedex-promise-v2');
 
+var P = new Pokedex();
 var app = express();
 
 app.use(bodyParser.json());
@@ -43,6 +45,34 @@ app.post('/collection/:collectionName', function(req, res, next) {
       res.send(results);
       res.end();
     };
+  });
+});
+
+// app.put('/collection/:collectionName/:id', function(req, res, next) {
+//   req.collection.updateById({_id:req.param.id}, {$set:req.body}, {safe:true, multi:false}, function(e, results) {
+//     if(e) {
+//       return next(e);
+//     }
+//     else {
+//       res.send(results === 1 ? {message:"success"} : {message:"failure"});
+//       res.end();
+//     };
+//   });
+// });
+
+
+app.get('/pokemon/:name', function(req, res, next) {
+  let name = req.params.name;
+  P.getPokemonByName(name)
+  .then(function(response) {
+    //console.log(response);
+    res.status(200);
+    res.send(response);
+  })
+  .catch(function(error) {
+    console.log('There was an ERROR: ', error);
+    res.status(500);
+    res.end();
   });
 });
 
