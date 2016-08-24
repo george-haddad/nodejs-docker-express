@@ -65,12 +65,10 @@ app.get('/pokemon/:name', function(req, res, next) {
   let name = req.params.name;
   P.getPokemonByName(name)
   .then(function(response) {
-    //console.log(response);
     res.status(200);
     res.send(response);
   })
   .catch(function(error) {
-    console.log('There was an ERROR: ', error);
     res.status(500);
     res.end();
   });
